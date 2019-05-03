@@ -6,5 +6,8 @@
   "repository": "https://github.com/3daddict/mailchimp-json-to-csv.git",
   "author": "Michael Salvati",
   "license": "MIT",
-  "private": false
+  "private": false,
+  "dependencies": {
+    "json2csv": "^4.5.1"
+  }
 }
