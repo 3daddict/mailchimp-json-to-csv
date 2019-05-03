@@ -1,0 +1,10 @@
+{
+  "name": "mailchimp-json-to-csv",
+  "version": "1.0.0",
+  "description": "MailChimp API Parse JSON data and Convert to CSV",
+  "main": "index.js",
+  "repository": "https://github.com/3daddict/mailchimp-json-to-csv.git",
+  "author": "Michael Salvati",
+  "license": "MIT",
+  "private": false
+}
