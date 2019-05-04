@@ -1,6 +1,7 @@
 const fs = require('fs');
 const { Parser } = require('json2csv');
-const testJSON10000 = require('./testJSON1.json');
+const moment = require('moment');
+const importJSON = require('./testJSON1.json');
 const scrubbedFile = require('./output/scrubbedFile.json');
 
 // find all users with unscubscribed by admin
@@ -18,8 +19,11 @@ const restructureData = (dataToKeep) => {
     const loadedFile = dataToKeep
     //Iterate through the objects to move and delete unwated data
     for (let i = 0; i < loadedFile.length; i++) {
+        let date = moment(loadedFile[i].activity.timestamp).format('MM/DD/YYYY')
+        let time = moment.utc(loadedFile[i].activity.timestamp).format("hh:mm a")
         loadedFile[i]["action"] = loadedFile[i].activity.action
-        loadedFile[i]["timestamp"] = loadedFile[i].activity.timestamp
+        loadedFile[i]["date"] = date
+        loadedFile[i]["time"] = time
         loadedFile[i]["title"] = loadedFile[i].activity.title
         delete loadedFile[i].uniqueEmail
         delete loadedFile[i].emailType
@@ -47,5 +51,5 @@ const saveCSVFile = (csvFile) => {
 }
 
 //Run scripts
-parseJSONFile(testJSON10000);
+parseJSONFile(importJSON);
 convertToCSV(scrubbedFile);
