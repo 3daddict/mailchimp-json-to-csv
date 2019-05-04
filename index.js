@@ -1,4 +1,7 @@
+const fs = require('fs');
+const { Parser } = require('json2csv');
 const testJSON10000 = require('./testJSON1.json');
+const scrubbedFile = require('./output/scrubbedFile.json');
 
 // find all users with unscubscribed by admin
 const parseJSONFile = (jsonFile) => {
@@ -7,7 +10,6 @@ const parseJSONFile = (jsonFile) => {
     const dataToKeep = loadedFile.filter((item) => {
         return item.unsubscribe_reason === "N/A (Unsubscribed by admin)"
     })
-    
     restructureData(dataToKeep);
 }
 
@@ -23,18 +25,27 @@ const restructureData = (dataToKeep) => {
         delete loadedFile[i].emailType
         delete loadedFile[i].activity
     }
-    return loadedFile
+    saveJsonFile(loadedFile)
 }
-
-// push to new json file
 
 //Save to JSON file function
 const saveJsonFile = (jsonFile) => {
     const dataJSON = JSON.stringify(jsonFile);
-    fs.writeFileSync('./output/json/scrubbedFile.json', dataJSON);
+    fs.writeFileSync('./output/scrubbedFile.json', dataJSON);
 }
 
 //convert json file to csv
+const convertToCSV = (jsonFile) => {
+    const fields = ['id', 'email', 'status', 'unsubscribe_reason', 'action', 'timestamp', 'title'];
+    const json2csvParser = new Parser({ fields });
+    saveCSVFile(json2csvParser.parse(jsonFile));
+}
 
-//Run script
+const saveCSVFile = (csvFile) => {
+    const dataCSV = csvFile;
+    fs.writeFileSync('./output/jsonExport.csv', dataCSV);
+}
+
+//Run scripts
 parseJSONFile(testJSON10000);
+convertToCSV(scrubbedFile);
