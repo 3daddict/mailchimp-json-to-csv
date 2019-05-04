@@ -3,5 +3,4 @@
 /output
 package-lock.json
 yarn.lock
-testJSON1.json
-testJSON2.json
+importJSON.json

@@ -1,7 +1,8 @@
 const fs = require('fs');
 const { Parser } = require('json2csv');
 const moment = require('moment');
-const importJSON = require('./testJSON1.json');
+const _ = require('underscore');
+const importJSON = require('./importJSON.json');
 const scrubbedFile = require('./output/scrubbedFile.json');
 
 // find all users with unscubscribed by admin
@@ -11,7 +12,10 @@ const parseJSONFile = (jsonFile) => {
     const dataToKeep = loadedFile.filter((item) => {
         return item.unsubscribe_reason === "N/A (Unsubscribed by admin)"
     })
-    restructureData(dataToKeep);
+
+    const checkedFile = _.uniq(dataToKeep, function(p){ return p.id; });
+
+    restructureData(checkedFile);
 }
 
 // move the activity up to main level with id
@@ -40,7 +44,7 @@ const saveJsonFile = (jsonFile) => {
 
 //convert json file to csv
 const convertToCSV = (jsonFile) => {
-    const fields = ['id', 'email', 'status', 'unsubscribe_reason', 'action', 'timestamp', 'title'];
+    const fields = ['id', 'email', 'status', 'unsubscribe_reason', 'action', 'date', 'time', 'title'];
     const json2csvParser = new Parser({ fields });
     saveCSVFile(json2csvParser.parse(jsonFile));
 }
